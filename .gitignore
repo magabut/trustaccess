@@ -1,0 +1,6 @@
+.codegraph/
+node_modules/
+.next/
+data/
+.env
+.env.local
