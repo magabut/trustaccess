@@ -1,0 +1,45 @@
+# dependencies
+node_modules
+
+# next.js build output
+.next
+out
+
+# git
+.git
+.gitignore
+
+# environment / secrets — never built into the image
+.env
+.env.*
+!.env.example
+
+# local database / data
+data
+postgresql:/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# tests / coverage
+coverage
+tests
+*.test.ts
+
+# backups
+backups
+*.dump
+*.bak
+
+# misc / local artifacts
+tsconfig.tsbuildinfo
+.DS_Store
+next-env.d.ts
+Dockerfile
+.dockerignore
