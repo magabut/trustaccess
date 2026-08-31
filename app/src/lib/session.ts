@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify } from 'jose';
-import { SESSION_COOKIE } from '../config';
+import { SESSION_COOKIE } from './config';
 
 const secret = new TextEncoder().encode(process.env.SESSION_SECRET || 'dev-secret-change-me');
 
