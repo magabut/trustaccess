@@ -4,13 +4,20 @@ export type TestDBSession = DBSession & {
   close(): Promise<void>;
 };
 
+function requireClosableDb(db: DBSession): TestDBSession {
+  if (!('close' in db) || typeof db.close !== 'function') {
+    throw new Error('PostgreSQL test adapter must provide DBSession.close()');
+  }
+  return db;
+}
+
 export async function createTestDb(): Promise<TestDBSession | undefined> {
   const databaseUrl = process.env.TEST_DATABASE_URL;
   if (!databaseUrl) return undefined;
 
-  return (await initDb(databaseUrl)) as unknown as TestDBSession;
+  return requireClosableDb(await initDb(databaseUrl));
 }
 
-export async function closeTestDb(db: TestDBSession | undefined): Promise<void> {
-  if (db && typeof db.close === 'function') await db.close();
+export async function closeTestDb(db: TestDBSession): Promise<void> {
+  await db.close();
 }

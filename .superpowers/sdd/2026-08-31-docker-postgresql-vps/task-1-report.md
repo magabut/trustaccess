@@ -44,7 +44,7 @@ TEST_DATABASE_URL="postgresql://user:pass@127.0.0.1:5432/test" ... npm test -- t
 FAIL ... db.close is not a function
 ```
 
-This confirms the test exercises behavior not provided by the current implementation. The dummy URL was not used to fabricate or provision PostgreSQL.
+This run reached teardown and exposed that the current SQLite session has no `close()` method; it did not establish PostgreSQL connectivity or execute the intended PostgreSQL query contract. The dummy URL was not used to fabricate or provision PostgreSQL.
 
 Full baseline test run:
 
@@ -64,4 +64,25 @@ The pre-existing `app/tests/db.test.ts` imports `seedDemo` from `app/src/lib/db.
 
 - The PostgreSQL adapter itself is intentionally not implemented in Task 1; it is the scope of Task 3. Consequently, the integration test can only run after that adapter exists and a disposable PostgreSQL URL is supplied.
 - Without `TEST_DATABASE_URL`, Vitest reports the adapter contract as skipped rather than executing against a server.
-- The helper uses the future adapter's `close()` contract when available and avoids changing production database configuration.
+- The helper now requires the future adapter's `close()` contract and fails clearly if it is absent; it avoids changing production database configuration.
+
+## Review Fixes
+
+- `app/tests/test-db.ts` now narrows `DBSession` through a runtime `close()` contract check instead of an unsafe cast.
+- Teardown requires a validated `TestDBSession` and always calls `close()`.
+- Removed the unrelated `hasInstallScript` lockfile metadata change from the existing `better-sqlite3` entry while retaining all `pg` and `@types/pg` dependency changes.
+
+Review-fix focused run without a database:
+
+```text
+PATH="/opt/homebrew/opt/node@22/bin:$PATH" npm test -- tests/db-adapter.test.ts
+Test Files  1 skipped (1)
+Tests       1 skipped (1)
+```
+
+Review-fix check with a dummy URL (no PostgreSQL server provisioned):
+
+```text
+TEST_DATABASE_URL="postgresql://user:pass@127.0.0.1:5432/test" ... npm test -- tests/db-adapter.test.ts
+FAIL ... PostgreSQL test adapter must provide DBSession.close()
+```
