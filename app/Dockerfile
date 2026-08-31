@@ -28,15 +28,13 @@ RUN groupadd --system --gid 1001 nodejs \
 COPY --from=builder /app/package.json /app/package-lock.json ./
 RUN npm ci --omit=dev
 
-# Built Next.js output and static assets.
-COPY --from=builder /app/.next ./.next
+# Built Next.js standalone runtime payload.
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
-# Config files required by `next start`.
+# Config file required by `next start`.
 COPY --from=builder /app/next.config.ts ./next.config.ts
-COPY --from=builder /app/tsconfig.json ./tsconfig.json
-COPY --from=builder /app/eslint.config.mjs ./eslint.config.mjs
-COPY --from=builder /app/postcss.config.mjs ./postcss.config.mjs
 
 # Migrations + CLI entrypoint (runs `npm run migrate` at startup). No seed data.
 COPY --from=builder /app/src ./src
@@ -46,4 +44,4 @@ USER nextjs
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm run migrate && npm run start"]
+CMD ["sh", "-c", "npm run migrate && node server.js"]

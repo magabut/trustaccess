@@ -1,6 +1,4 @@
-{$DOMAIN} {
-  encode zstd gzip
-
+http://{$DOMAIN} {
   reverse_proxy web:3000
 
   header {

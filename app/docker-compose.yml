@@ -41,7 +41,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "fetch('http://127.0.0.1:3000/api/health').then((r)=>r.json().then((j)=>{if(!r.ok||!j.ok)process.exit(1);})).catch(()=>process.exit(1))",
+          "const os=require('os');const ip=Object.values(os.networkInterfaces()).flat().find((n)=>n&&n.family==='IPv4'&&!n.internal)?.address||'127.0.0.1';fetch('http://'+ip+':3000/api/health').then((r)=>r.json().then((j)=>{if(!r.ok||!j.ok)process.exit(1);})).catch(()=>process.exit(1))",
         ]
       interval: 15s
       timeout: 5s
@@ -54,9 +54,10 @@ services:
     depends_on:
       web:
         condition: service_healthy
+    environment:
+      DOMAIN: ${DOMAIN:?DOMAIN is required}
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
