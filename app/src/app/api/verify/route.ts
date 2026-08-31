@@ -34,10 +34,13 @@ export async function POST(req: Request) {
     return NextResponse.json(vp);
   }
 
-  // === Mode 2: Get VP Result ===
+  // === Mode 2: Get VP Result (session-based) ===
   if (body.action === 'result') {
-    const { qr_token } = body;
-    const result = await client.getVPResult(qr_token);
+    const sessionId = body.sessionId || body.qr_token;
+    if (!sessionId) {
+      return NextResponse.json({ ok: false, error: 'sessionId required' }, { status: 400 });
+    }
+    const result = await client.getVPResultBySession(sessionId);
     return NextResponse.json(result);
   }
 

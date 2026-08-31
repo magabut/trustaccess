@@ -40,10 +40,10 @@ export async function POST(req: Request) {
     }
 
     const data = result?.data;
-    const subject = data?.presentation?.credentialSubject || {};
-    const holderHint = simple?.data?.holder_account?.username || data?.holder_did || 'holder';
-    const email = subject?.email || (holderHint.includes('@') ? holderHint : `${holderHint}@eid.local`);
-    const name = subject?.name || subject?.full_name || email.split('@')[0];
+    const subject = (data?.presentation?.credentialSubject || {}) as Record<string, unknown>;
+    const holderHint = String(simple?.data?.holder_account?.username || data?.holder_did || 'holder');
+    const email = String(subject.email || (holderHint.includes('@') ? holderHint : `${holderHint}@eid.local`));
+    const name = String(subject.name || subject.full_name || email.split('@')[0]);
     const eidSubject = data?.holder_did || null;
 
     const db = getDb();

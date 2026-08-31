@@ -56,7 +56,7 @@ export async function POST() {
     if (!payload?.status || !payload?.data?.session_id) {
       const msg = String(payload?.message || '').toLowerCase();
       if (msg.includes('verifier doc schema')) {
-        let schemaId = envSchemaId;
+        let schemaId: string | null = envSchemaId ?? null;
         if (!schemaId) {
           schemaId = await ensureLoginVerificationSchema();
         }
