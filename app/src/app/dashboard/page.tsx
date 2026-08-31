@@ -34,8 +34,22 @@ export default async function Dashboard() {
   if (!sess) redirect('/login');
   const stats = await getDashboardStats();
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe_0%,#f8fafc_55%)] p-8 text-slate-900">
-      <div className="app-shell">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe_0%,#f8fafc_55%)] text-slate-900">
+      <nav className="border-b border-slate-200 bg-white">
+        <div className="app-shell flex h-16 items-center justify-between px-6">
+          <div className="font-semibold tracking-tight text-slate-900">TrustAccess</div>
+          <div className="flex items-center gap-4 text-sm">
+            <span className="text-slate-400">{sess.name}</span>
+            <form action="/api/logout" method="post">
+              <button type="submit" className="rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900">
+                Logout
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+      <div className="app-shell px-6 py-8">
         <div className="app-card mb-8 p-6">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>
@@ -43,12 +57,6 @@ export default async function Dashboard() {
               <p className="app-muted mt-2">Selamat datang, {sess.name}</p>
               <p className="mt-1 text-sm text-blue-600">Verifier-focused workspace untuk TrustAccess</p>
             </div>
-
-            <form action="/api/logout" method="post">
-              <button type="submit" className="rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-600 transition hover:bg-slate-100 hover:text-slate-900">
-                Logout
-              </button>
-            </form>
           </div>
         </div>
 
