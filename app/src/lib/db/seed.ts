@@ -119,6 +119,21 @@ export async function seedDemo(
     );
   }
 
+  const events: Array<[string, string, number]> = [
+    ['workshop-ai', 'Workshop Kecerdasan Buatan', 40],
+    ['seminar-cyber', 'Seminar Keamanan Siber', 120],
+    ['expo-iot', 'Expo Internet of Things', 200],
+    ['competition-hackathon', 'Kompetisi Hackathon', 60],
+  ];
+  for (const [slug, name, capacity] of events) {
+    const existing = await db.get<{ id: number }>('SELECT id FROM events WHERE slug = $1', [slug]);
+    if (existing) continue;
+    await db.run(
+      'INSERT INTO events (slug, name, capacity) VALUES ($1, $2, $3)',
+      [slug, name, capacity],
+    );
+  }
+
   if (eid) {
     eid.issueCredential({
       templateName: 'SafetyInduction',
