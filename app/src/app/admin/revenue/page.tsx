@@ -6,7 +6,7 @@ export default async function Revenue() {
   const sess = await getSession();
   if (!sess) redirect('/login');
   const db = getDb();
-  const paid = db.get<any>("SELECT SUM(amount_cents) s FROM payments WHERE status='paid'")?.s || 0;
+  const paid = (await db.get<any>("SELECT SUM(amount_cents)::int s FROM payments WHERE status='paid'"))?.s || 0;
   return (
     <div className="min-h-screen p-8 bg-zinc-950 text-white">
       <h1 className="text-3xl font-semibold mb-6">Revenue (Demo)</h1>

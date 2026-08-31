@@ -16,4 +16,15 @@ describe('PostgreSQL DBSession', () => {
       await closeTestDb(db);
     }
   });
+
+  it.skipIf(!process.env.TEST_DATABASE_URL)('rejects on database errors instead of crashing', async () => {
+    const db = await createTestDb();
+    if (!db) return;
+
+    try {
+      await expect(db.run('SELECT * FROM missing_table_xyz')).rejects.toThrow();
+    } finally {
+      await closeTestDb(db);
+    }
+  });
 });

@@ -2,10 +2,12 @@ import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import { createClient } from '@/lib/eid/client';
 
+type RegisterableRow = { id: number; credential_template: string };
+
 export async function POST(req: Request) {
   const { token, email } = await req.json();
   const db = getDb();
-  const reg = db.get<any>('SELECT * FROM registerables WHERE reg_token = ?', [token]);
+  const reg = await db.get<RegisterableRow>('SELECT id, credential_template FROM registerables WHERE reg_token = $1', [token]);
   if (!reg) return NextResponse.json({ error: 'not found' }, { status: 404 });
 
   const client = createClient();
@@ -16,10 +18,10 @@ export async function POST(req: Request) {
     claims: { fullName: email.split('@')[0] },
   });
 
-  db.run(
+  await db.run(
     `INSERT INTO registrations (registerable_id, holder_email, kyc_ref, credential_id, payment_status, status, created_at)
-     VALUES (?,?,?,?, 'paid', 'confirmed', datetime('now'))`,
-    [reg.id, email, kyc.kycId, issued.credentialId],
+     VALUES ($1,$2,$3,$4, 'paid', 'confirmed', $5)`,
+    [reg.id, email, kyc.kycId, issued.credentialId, new Date().toISOString()],
   );
 
   return NextResponse.json({ ok: true, credentialId: issued.credentialId });

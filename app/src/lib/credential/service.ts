@@ -12,15 +12,15 @@ export async function issueCredential(
   const now = new Date().toISOString();
   const validFrom = input.validFrom || now;
   const validUntil = input.validUntil || new Date(Date.now() + 365 * 86400000).toISOString();
-  db.run(
+  await db.run(
     `INSERT INTO issued_passes (org_id, credential_id, holder_email, template_name, document_title, issuer_label, description, category, status, source, valid_from, valid_until, created_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,
     [orgId, out.credentialId, input.holderEmail, input.templateName, input.documentTitle || input.templateName, input.issuerLabel || 'TrustAccess', input.description || '', 'credential', 'active', 'admin', validFrom, validUntil, now],
   );
   return out;
 }
 
-export function revokeCredential(db: DBSession, credentialId: string): { ok: boolean } {
-  db.run(`UPDATE issued_passes SET status = 'revoked' WHERE credential_id = ?`, [credentialId]);
+export async function revokeCredential(db: DBSession, credentialId: string): Promise<{ ok: boolean }> {
+  await db.run(`UPDATE issued_passes SET status = 'revoked' WHERE credential_id = $1`, [credentialId]);
   return { ok: true };
 }
