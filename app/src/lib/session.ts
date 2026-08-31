@@ -7,10 +7,11 @@ const secret = new TextEncoder().encode(process.env.SESSION_SECRET || 'dev-secre
 export interface Session {
   email: string;
   name: string;
+  role?: string;
 }
 
-export async function createSession(email: string, name: string): Promise<void> {
-  const token = await new SignJWT({ email, name })
+export async function createSession(email: string, name: string, role = 'host'): Promise<void> {
+  const token = await new SignJWT({ email, name, role })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
@@ -28,7 +29,7 @@ export async function getSession(): Promise<Session | null> {
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, secret);
-    return { email: payload.email as string, name: payload.name as string };
+    return { email: payload.email as string, name: payload.name as string, role: payload.role as string | undefined };
   } catch {
     return null;
   }

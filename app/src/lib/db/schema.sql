@@ -10,10 +10,11 @@ CREATE TABLE IF NOT EXISTS organizations (
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   org_id INTEGER NOT NULL REFERENCES organizations(id),
-  eid_subject TEXT NOT NULL UNIQUE,
+  eid_subject TEXT,
   name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  role TEXT NOT NULL DEFAULT 'host'
+  email TEXT NOT NULL UNIQUE,
+  role TEXT NOT NULL DEFAULT 'host',
+  password_hash TEXT
 );
 
 CREATE TABLE IF NOT EXISTS areas (
