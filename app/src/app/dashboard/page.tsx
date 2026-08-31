@@ -1,6 +1,8 @@
 import { getSession } from '@/lib/session';
 import { getDb } from '@/lib/db';
 import { redirect } from 'next/navigation';
+import { currentSlugs, hasMainChoice, loadEventCounts } from '@/lib/events-service';
+import { EVENTS } from '@/lib/events';
 
 type CountRow = { count: string | number | null };
 
@@ -32,7 +34,11 @@ export async function getDashboardStats(db: DashboardStatsDb = getDb()) {
 export default async function Dashboard() {
   const sess = await getSession();
   if (!sess) redirect('/login');
+  const db = getDb();
+  const mySlugs = await currentSlugs(db, sess.email);
+  if (!hasMainChoice(mySlugs)) redirect('/events');
   const stats = await getDashboardStats();
+  const counts = await loadEventCounts(db);
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe_0%,#f8fafc_55%)] text-slate-900">
       <nav className="border-b border-slate-200 bg-white">
@@ -75,6 +81,19 @@ export default async function Dashboard() {
             <div className="text-xs font-medium tracking-[0.16em] text-amber-600">USERS</div>
             <div className="mt-2 text-3xl font-semibold text-slate-900">{stats.totalUsers}</div>
             <p className="mt-1 text-sm text-slate-500">Total users terdaftar</p>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h2 className="app-title text-lg font-semibold mb-3">Acara</h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {Object.entries(EVENTS).map(([slug, event]) => (
+              <div key={slug} className="app-card p-5">
+                <div className="text-xs font-medium tracking-[0.16em] text-blue-600">{event.name.toUpperCase()}</div>
+                <div className="mt-2 text-2xl font-semibold text-slate-900">{counts[slug]} / {event.capacity}</div>
+                <p className="mt-1 text-sm text-slate-500">{event.main ? 'Main event' : 'Bonus event'}</p>
+              </div>
+            ))}
           </div>
         </div>
 
