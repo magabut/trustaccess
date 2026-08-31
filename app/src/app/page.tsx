@@ -5,7 +5,10 @@ export default function Home() {
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <nav className="border-b border-slate-200 bg-white">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="font-semibold tracking-tight text-slate-900">TrustAccess</div>
+          <div className="flex items-center gap-2">
+            <img src="/trust.png" alt="TrustAccess" className="h-8 w-8" />
+            <div className="font-semibold tracking-tight text-slate-900">TrustAccess</div>
+          </div>
           <div className="flex items-center gap-6 text-sm text-slate-600">
             <Link href="/login" className="hover:text-slate-900 transition">Login</Link>
           </div>
@@ -13,18 +16,21 @@ export default function Home() {
       </nav>
 
       <div className="max-w-5xl mx-auto px-6 pt-20 pb-24">
-        <div className="max-w-2xl">
-          <div className="inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs tracking-[2px] mb-4 border border-blue-100">BY E.ID</div>
-          <h1 className="text-6xl font-semibold tracking-tighter leading-none mb-6 text-slate-900">
-            Verify what people<br />are entitled to do.
-          </h1>
-          <p className="text-xl text-slate-500 mb-10">
-            Trusted credential & access infrastructure.<br />
-            One engine. Many real-world permissions.
-          </p>
-          <div className="flex gap-4">
-            <Link href="/login" className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-sm">Login with e.id</Link>
+        <div className="flex items-center gap-12">
+          <div className="max-w-2xl">
+            <div className="inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs tracking-[2px] mb-4 border border-blue-100">BY E.ID</div>
+            <h1 className="text-6xl font-semibold tracking-tighter leading-none mb-6 text-slate-900">
+              Verify what people<br />are entitled to do.
+            </h1>
+            <p className="text-xl text-slate-500 mb-10">
+              Trusted credential & access infrastructure.<br />
+              One engine. Many real-world permissions.
+            </p>
+            <div className="flex gap-4">
+              <Link href="/login" className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-sm">Login with e.id</Link>
+            </div>
           </div>
+          <img src="/trust.png" alt="TrustAccess" className="hidden md:block max-h-[24rem] w-auto shrink-0" />
         </div>
       </div>
 

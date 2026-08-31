@@ -43,7 +43,10 @@ export default async function Dashboard() {
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe_0%,#f8fafc_55%)] text-slate-900">
       <nav className="border-b border-slate-200 bg-white">
         <div className="app-shell flex h-16 items-center justify-between px-6">
-          <div className="font-semibold tracking-tight text-slate-900">TrustAccess</div>
+          <div className="flex items-center gap-2">
+            <img src="/trust.png" alt="TrustAccess" className="h-8 w-8" />
+            <div className="font-semibold tracking-tight text-slate-900">TrustAccess</div>
+          </div>
           <div className="flex items-center gap-4 text-sm">
             <span className="text-slate-400">{sess.name}</span>
             <form action="/api/logout" method="post">

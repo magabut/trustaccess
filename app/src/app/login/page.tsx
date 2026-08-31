@@ -106,6 +106,7 @@ function LoginContent() {
         </section>
 
         <section className="app-card w-full bg-white p-8 shadow-lg shadow-slate-200/50">
+          <img src="/trust.png" alt="TrustAccess" className="mx-auto mb-4 h-32 w-32" />
           <h2 className="text-2xl font-semibold text-slate-900">TrustAccess Login</h2>
 
         {searchParams.get('error') && (
