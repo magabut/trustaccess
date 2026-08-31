@@ -120,10 +120,10 @@ export async function seedDemo(
   }
 
   const events: Array<[string, string, number]> = [
-    ['workshop-ai', 'Workshop Kecerdasan Buatan', 40],
-    ['seminar-cyber', 'Seminar Keamanan Siber', 120],
-    ['expo-iot', 'Expo Internet of Things', 200],
-    ['competition-hackathon', 'Kompetisi Hackathon', 60],
+    ['panel-discussion', 'Panel Discussion', 15],
+    ['workshop', 'Workshop', 15],
+    ['vibe-coding', 'Vibe Coding', 15],
+    ['concert', 'Concert', 100],
   ];
   for (const [slug, name, capacity] of events) {
     const existing = await db.get<{ id: number }>('SELECT id FROM events WHERE slug = $1', [slug]);
