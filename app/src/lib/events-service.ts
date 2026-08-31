@@ -3,11 +3,6 @@ import type { DBSession } from './db';
 
 export type EventCounts = Record<string, number>;
 
-export type EventsService = {
-  countsFor(db: DBSession): Promise<EventCounts>;
-  hasMain(slugs: string[]): boolean;
-};
-
 export async function loadEventCounts(db: DBSession): Promise<EventCounts> {
   const rows = await db.all<{ slug: string; n: number }>(
     `SELECT slug, COUNT(*)::int AS n FROM event_choices GROUP BY slug`,
