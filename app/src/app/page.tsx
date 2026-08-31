@@ -8,7 +8,6 @@ export default function Home() {
           <div className="font-semibold tracking-tight text-slate-900">TrustAccess</div>
           <div className="flex items-center gap-6 text-sm text-slate-600">
             <Link href="/login" className="hover:text-slate-900 transition">Login</Link>
-            <Link href="/gate" className="hover:text-slate-900 transition">Demo Gate</Link>
           </div>
         </div>
       </nav>
@@ -25,7 +24,6 @@ export default function Home() {
           </p>
           <div className="flex gap-4">
             <Link href="/login" className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition shadow-sm">Login with e.id</Link>
-            <Link href="/gate" className="px-8 py-3 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-100 transition">Try Gate Verifier</Link>
           </div>
         </div>
       </div>
