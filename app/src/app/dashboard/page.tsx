@@ -1,9 +1,38 @@
 import { getSession } from '@/lib/session';
+import { getDb } from '@/lib/db';
 import { redirect } from 'next/navigation';
+
+type CountRow = { count: string | number | null };
+
+function toCount(value: string | number | null | undefined): number {
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string') {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : 0;
+  }
+  return 0;
+}
+
+type DashboardStatsDb = Pick<ReturnType<typeof getDb>, 'get'>;
+
+export async function getDashboardStats(db: DashboardStatsDb = getDb()) {
+  const [users, events, granted] = await Promise.all([
+    db.get<CountRow>('SELECT COUNT(*)::text AS count FROM users'),
+    db.get<CountRow>('SELECT COUNT(*)::text AS count FROM access_events'),
+    db.get<CountRow>("SELECT COUNT(*)::text AS count FROM access_events WHERE verdict = 'GRANT'"),
+  ]);
+
+  return {
+    totalUsers: toCount(users?.count),
+    totalCheckins: toCount(events?.count),
+    totalGrantedCheckins: toCount(granted?.count),
+  };
+}
 
 export default async function Dashboard() {
   const sess = await getSession();
   if (!sess) redirect('/login');
+  const stats = await getDashboardStats();
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,#082f49_0%,#0a0a0a_55%)] p-8 text-white">
       <div className="app-shell">
@@ -20,6 +49,24 @@ export default async function Dashboard() {
                 Logout
               </button>
             </form>
+          </div>
+        </div>
+
+        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="rounded-xl border border-white/10 bg-black/20 p-5">
+            <div className="text-xs tracking-[0.16em] text-sky-200">CHECK-IN</div>
+            <div className="mt-2 text-3xl font-semibold">{stats.totalCheckins}</div>
+            <p className="mt-1 text-sm text-white/60">Total check-in events</p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-black/20 p-5">
+            <div className="text-xs tracking-[0.16em] text-emerald-200">GRANTED</div>
+            <div className="mt-2 text-3xl font-semibold">{stats.totalGrantedCheckins}</div>
+            <p className="mt-1 text-sm text-white/60">Check-in dengan verdict GRANT</p>
+          </div>
+          <div className="rounded-xl border border-white/10 bg-black/20 p-5">
+            <div className="text-xs tracking-[0.16em] text-amber-200">USERS</div>
+            <div className="mt-2 text-3xl font-semibold">{stats.totalUsers}</div>
+            <p className="mt-1 text-sm text-white/60">Total users terdaftar</p>
           </div>
         </div>
 
