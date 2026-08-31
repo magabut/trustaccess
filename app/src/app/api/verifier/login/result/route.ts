@@ -8,12 +8,19 @@ const client = createClient();
 type UserRow = { id: number; name: string; email: string; role: string; eid_subject: string | null };
 
 export async function POST(req: Request) {
+  let sessionId: string | undefined;
   try {
-    const { sessionId } = await req.json();
-    if (!sessionId) {
-      return NextResponse.json({ ok: false, error: 'sessionId required' }, { status: 400 });
-    }
+    const body = await req.json();
+    sessionId = typeof body?.sessionId === 'string' ? body.sessionId : undefined;
+  } catch {
+    return NextResponse.json({ ok: false, error: 'invalid_json_body' }, { status: 400 });
+  }
 
+  if (!sessionId) {
+    return NextResponse.json({ ok: false, error: 'sessionId required' }, { status: 400 });
+  }
+
+  try {
     const simple = await client.getVPSessionSimple(sessionId);
     const simpleStatus = String(simple?.data?.status || '').toUpperCase();
 
