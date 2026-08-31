@@ -8,7 +8,14 @@ function requireClosableDb(db: DBSession): TestDBSession {
   if (!('close' in db) || typeof db.close !== 'function') {
     throw new Error('PostgreSQL test adapter must provide DBSession.close()');
   }
-  return db;
+
+  const close = db.close;
+  return {
+    ...db,
+    close: async () => {
+      await close();
+    },
+  };
 }
 
 export async function createTestDb(): Promise<TestDBSession | undefined> {

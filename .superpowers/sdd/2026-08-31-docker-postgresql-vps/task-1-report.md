@@ -86,3 +86,24 @@ Review-fix check with a dummy URL (no PostgreSQL server provisioned):
 TEST_DATABASE_URL="postgresql://user:pass@127.0.0.1:5432/test" ... npm test -- tests/db-adapter.test.ts
 FAIL ... PostgreSQL test adapter must provide DBSession.close()
 ```
+
+## TypeScript Narrowing Fix
+
+The lifecycle guard now captures the narrowed callable `close` property and returns a concrete `TestDBSession` wrapper. This removes the TypeScript error caused by returning an object whose `close` property remained `unknown`, without using an unsafe cast.
+
+Focused test after the narrowing fix:
+
+```text
+PATH="/opt/homebrew/opt/node@22/bin:$PATH" npm test -- tests/db-adapter.test.ts
+Test Files  1 skipped (1)
+Tests       1 skipped (1)
+```
+
+TypeScript check:
+
+```text
+PATH="/opt/homebrew/opt/node@22/bin:$PATH" npx tsc --noEmit
+TypeScript: 20 errors in 11 files
+```
+
+The reported errors are pre-existing baseline errors in application files and `tests/db.test.ts`; no error was reported for `tests/test-db.ts`.
