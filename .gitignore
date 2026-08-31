@@ -1,6 +1,7 @@
 .codegraph/
 node_modules/
 .next/
+.worktrees/
 data/
 .env
 .env.local
