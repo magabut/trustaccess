@@ -79,7 +79,7 @@ function LoginContent() {
       const j = await res.json();
       setVcStatus(j.status || (j.approved ? 'APPROVED' : 'PENDING'));
       if (j.approved) {
-        router.replace('/dashboard');
+        router.replace('/events');
         return;
       }
     } catch {
