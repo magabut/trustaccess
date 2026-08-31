@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { getDb } from '@/lib/db';
 import { EVENTS, isKnownEvent, isMainEvent } from '@/lib/events';
-import { loadEventCounts, currentSlugs, hasMainChoice } from '@/lib/events-service';
+import { loadEventCounts, currentSlugs } from '@/lib/events-service';
 
 export async function POST(req: Request) {
   const sess = await getSession();
@@ -29,14 +29,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'already_chosen' }, { status: 409 });
   }
 
-  const canBeMain = isMainEvent(slug);
-  if (canBeMain && hasMainChoice(before)) {
-    return NextResponse.json({ ok: false, error: 'bad_main_choice' }, { status: 409 });
-  }
-
   const counts = await loadEventCounts(db);
   if (counts[slug] >= EVENTS[slug].capacity) {
     return NextResponse.json({ ok: false, error: 'quota_full' }, { status: 409 });
+  }
+
+  if (isMainEvent(slug)) {
+    const currentMain = before.find((s) => isMainEvent(s));
+    if (currentMain && currentMain !== slug) {
+      await db.run('DELETE FROM event_choices WHERE user_id = $1 AND slug = $2', [user.id, currentMain]);
+    }
   }
 
   await db.run(
