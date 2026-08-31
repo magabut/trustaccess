@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Login() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[radial-gradient(circle_at_20%_20%,#172554_0%,#09090b_45%,#020617_100%)] text-white" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[radial-gradient(circle_at_20%_20%,#dbeafe_0%,#f8fafc_45%,#ffffff_100%)] text-slate-900" />}>
       <LoginContent />
     </Suspense>
   );
@@ -24,10 +24,10 @@ function LoginContent() {
 
   const statusTone =
     vcStatus === 'APPROVED'
-      ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-200'
+      ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
       : vcStatus === 'REJECTED' || vcStatus === 'EXPIRED'
-        ? 'border-red-500/40 bg-red-500/10 text-red-200'
-        : 'border-amber-500/40 bg-amber-500/10 text-amber-200';
+        ? 'border-red-300 bg-red-50 text-red-700'
+        : 'border-amber-300 bg-amber-50 text-amber-700';
 
   useEffect(() => {
     let active = true;
@@ -91,52 +91,52 @@ function LoginContent() {
   }, [router, vcSessionId]);
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_20%_20%,#172554_0%,#09090b_45%,#020617_100%)] text-white">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_20%_20%,#dbeafe_0%,#f8fafc_45%,#ffffff_100%)] text-slate-900">
       <div className="app-shell grid min-h-screen grid-cols-1 gap-8 px-6 py-8 lg:grid-cols-2 lg:items-center">
-        <section className="app-card p-8 backdrop-blur">
-          <div className="mb-3 inline-flex rounded-full border border-sky-300/30 bg-sky-400/10 px-3 py-1 text-xs tracking-[0.2em] text-sky-200">VERIFIER FLOW</div>
+        <section className="app-card p-8">
+          <div className="mb-3 inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs tracking-[0.2em] text-blue-700">VERIFIER FLOW</div>
           <h1 className="app-title text-4xl font-semibold">Sign in with trusted credential</h1>
           <p className="app-muted mt-4">TrustAccess memakai e.id Verifier API untuk login via QR + wallet approval, tanpa password.</p>
           <div className="app-muted mt-8 space-y-3 text-sm">
-            <div className="rounded-lg border border-white/10 bg-black/20 p-3">1. Start session</div>
-            <div className="rounded-lg border border-white/10 bg-black/20 p-3">2. Scan QR di aplikasi e.id</div>
-            <div className="rounded-lg border border-white/10 bg-black/20 p-3">3. Approve credential</div>
-            <div className="rounded-lg border border-white/10 bg-black/20 p-3">4. Session aktif otomatis</div>
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">1. Start session</div>
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">2. Scan QR di aplikasi e.id</div>
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">3. Approve credential</div>
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">4. Session aktif otomatis</div>
           </div>
         </section>
 
-        <section className="app-card w-full bg-zinc-950/70 p-8 shadow-2xl shadow-black/40">
-          <h2 className="text-2xl font-semibold">TrustAccess Login</h2>
+        <section className="app-card w-full bg-white p-8 shadow-lg shadow-slate-200/50">
+          <h2 className="text-2xl font-semibold text-slate-900">TrustAccess Login</h2>
 
         {searchParams.get('error') && (
-          <div className="mb-4 rounded border border-red-500/40 bg-red-500/10 p-2 text-sm text-red-200">
+          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
             Login e.id gagal. Silakan ulangi scan QR.
           </div>
         )}
 
-          <button onClick={doLogin} disabled={loading} className="mt-4 w-full rounded bg-white py-2 font-medium text-black disabled:opacity-60">
+          <button onClick={doLogin} disabled={loading} className="mt-4 w-full rounded-lg bg-blue-600 py-2.5 font-medium text-white hover:bg-blue-700 transition disabled:opacity-60 shadow-sm">
             {loading ? 'Processing...' : 'Start QR Login'}
           </button>
 
           {vcUrl && (
-            <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.02] p-4 text-xs text-white/80">
-              <div className="mb-2 font-medium">Verifier Session</div>
-              <div className="mb-3 break-all text-white/50">{vcSessionId}</div>
+            <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
+              <div className="mb-2 font-medium text-slate-700">Verifier Session</div>
+              <div className="mb-3 break-all text-slate-400">{vcSessionId}</div>
               {vcQrDataUrl && (
                 <div className="mb-3 flex justify-center">
-                  <Image src={vcQrDataUrl} alt="QR Login e.id" width={224} height={224} className="h-56 w-56 rounded-lg bg-white p-2" unoptimized />
+                  <Image src={vcQrDataUrl} alt="QR Login e.id" width={224} height={224} className="h-56 w-56 rounded-lg bg-white p-2 border border-slate-200" unoptimized />
                 </div>
               )}
-              <div className="mb-3 text-center text-white/60">Scan QR ini dari aplikasi e.id di HP</div>
-              <div className={`mb-3 rounded border px-3 py-2 text-center ${statusTone}`}>Status: {vcStatus || 'PENDING'}</div>
+              <div className="mb-3 text-center text-slate-500">Scan QR ini dari aplikasi e.id di HP</div>
+              <div className={`mb-3 rounded-lg border px-3 py-2 text-center font-medium ${statusTone}`}>Status: {vcStatus || 'PENDING'}</div>
               <div className="flex gap-2">
-                <a href={vcUrl} target="_blank" className="flex-1 rounded border border-white/20 px-3 py-2 text-center hover:bg-white/10">Open Wallet Link</a>
-                <button onClick={checkVcResult} className="flex-1 rounded bg-white px-3 py-2 text-black" disabled={isChecking}>{isChecking ? 'Checking...' : 'Check now'}</button>
+                <a href={vcUrl} target="_blank" className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-center text-slate-700 hover:bg-slate-100 transition">Open Wallet Link</a>
+                <button onClick={checkVcResult} className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-white font-medium hover:bg-blue-700 transition" disabled={isChecking}>{isChecking ? 'Checking...' : 'Check now'}</button>
               </div>
-              <div className="mt-2 text-center text-[11px] text-white/50">Auto-check dimatikan. Klik Check now setelah approve di wallet.</div>
+              <div className="mt-2 text-center text-[11px] text-slate-400">Auto-check dimatikan. Klik Check now setelah approve di wallet.</div>
             </div>
           )}
-          <p className="mt-4 text-xs text-white/50">Gunakan aplikasi e.id di HP untuk scan QR. Hanya wallet dengan credential valid yang bisa login.</p>
+          <p className="mt-4 text-xs text-slate-400">Gunakan aplikasi e.id di HP untuk scan QR. Hanya wallet dengan credential valid yang bisa login.</p>
         </section>
       </div>
     </div>

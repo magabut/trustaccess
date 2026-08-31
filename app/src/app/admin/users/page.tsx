@@ -7,7 +7,7 @@ export default async function AdminUsers() {
   if (!sess || sess.role !== 'admin') redirect('/login');
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#1f2937_0%,#09090b_60%)] p-8 text-white">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe_0%,#f8fafc_60%)] p-8 text-slate-900">
       <div className="app-shell max-w-5xl">
         <div className="app-card mb-6 p-6">
           <h1 className="app-title text-3xl font-semibold">Manage Users</h1>
@@ -16,7 +16,7 @@ export default async function AdminUsers() {
 
         <UsersManager />
 
-        <a href="/admin" className="mt-8 inline-block text-sm text-white/60 hover:text-white">← Back</a>
+        <a href="/admin" className="mt-8 inline-block text-sm text-slate-500 hover:text-slate-900 transition">← Back</a>
       </div>
     </div>
   );

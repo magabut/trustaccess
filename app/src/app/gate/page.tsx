@@ -53,7 +53,7 @@ export default function Gate() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,#164e63_0%,#09090b_60%)] p-8 text-white">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe_0%,#f8fafc_60%)] p-8 text-slate-900">
       <div className="app-shell">
         <div className="app-card mb-6 p-6">
           <h1 className="app-title text-3xl font-semibold">Gate Verifier</h1>
@@ -61,36 +61,36 @@ export default function Gate() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="app-card bg-black/20 p-5">
+          <div className="app-card bg-slate-50 p-5">
             <div className="app-muted mb-3 text-sm">e.id Verifier Flow</div>
-            <button onClick={createVP} className="rounded bg-emerald-600 px-5 py-2">Create VP Request</button>
+            <button onClick={createVP} className="rounded-lg bg-emerald-600 px-5 py-2 text-white font-medium hover:bg-emerald-700 transition shadow-sm">Create VP Request</button>
             {vp && (
-              <div className="mt-4 rounded border border-white/10 bg-black/40 p-4 text-sm">
+              <div className="mt-4 rounded-lg border border-slate-200 bg-white p-4 text-sm">
                 <div className="app-muted mb-2 break-all text-xs">session: {vp?.sessionId || '-'}</div>
                 {qrDataUrl && (
                   <div className="mb-3 flex justify-center">
-                    <Image src={qrDataUrl} alt="VP QR" width={224} height={224} className="h-56 w-56 rounded bg-white p-2" unoptimized />
+                    <Image src={qrDataUrl} alt="VP QR" width={224} height={224} className="h-56 w-56 rounded-lg bg-white p-2 border border-slate-200" unoptimized />
                   </div>
                 )}
-                <a href={vp?.oauthUrl} target="_blank" className="text-xs underline">Open wallet link</a>
-                <button onClick={checkResult} className="mt-3 block rounded bg-white px-3 py-1 text-black">Check Result</button>
+                <a href={vp?.oauthUrl} target="_blank" className="text-xs underline text-blue-600 hover:text-blue-700">Open wallet link</a>
+                <button onClick={checkResult} className="mt-3 block rounded-lg bg-blue-600 px-3 py-1.5 text-white text-sm font-medium hover:bg-blue-700 transition">Check Result</button>
               </div>
             )}
           </div>
 
-          <div className="app-card bg-black/20 p-5">
+          <div className="app-card bg-slate-50 p-5">
             <div className="app-muted mb-3 text-sm">Legacy Demo (manual JSON)</div>
-            <input className="mb-3 w-full rounded border border-white/20 bg-zinc-900 px-3 py-2" value={apId} onChange={(e) => setApId(e.target.value)} placeholder="Access Point ID" />
-            <textarea className="mb-3 h-40 w-full rounded border border-white/20 bg-zinc-900 p-3 font-mono text-sm" value={payload} onChange={(e) => setPayload(e.target.value)} />
-            <button onClick={verifyLegacy} className="rounded bg-white px-6 py-2 text-black">Verify (Legacy)</button>
+            <input className="mb-3 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400" value={apId} onChange={(e) => setApId(e.target.value)} placeholder="Access Point ID" />
+            <textarea className="mb-3 h-40 w-full rounded-lg border border-slate-300 bg-white p-3 font-mono text-sm text-slate-900 placeholder:text-slate-400" value={payload} onChange={(e) => setPayload(e.target.value)} />
+            <button onClick={verifyLegacy} className="rounded-lg bg-blue-600 px-6 py-2 text-white font-medium hover:bg-blue-700 transition shadow-sm">Verify (Legacy)</button>
           </div>
         </div>
 
         {result && (
-          <pre className="mt-6 overflow-auto rounded-xl border border-white/10 bg-black/40 p-4 text-sm">{JSON.stringify(result, null, 2)}</pre>
+          <pre className="mt-6 overflow-auto rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">{JSON.stringify(result, null, 2)}</pre>
         )}
 
-        <a href="/dashboard" className="mt-8 inline-block text-sm text-white/60 hover:text-white">← Back</a>
+        <a href="/dashboard" className="mt-8 inline-block text-sm text-slate-500 hover:text-slate-900 transition">← Back</a>
       </div>
     </div>
   );

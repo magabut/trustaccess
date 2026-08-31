@@ -46,28 +46,28 @@ export default function UsersManager() {
     void loadUsers();
   }, []);
 
-  if (loading) return <div className="text-sm text-white/60">Loading users...</div>;
-  if (error) return <div className="rounded-lg border border-red-500/40 bg-red-500/10 p-3 text-sm text-red-200">{error}</div>;
+  if (loading) return <div className="text-sm text-slate-500">Loading users...</div>;
+  if (error) return <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div>;
 
   return (
     <div className="space-y-3">
       {toast && (
-        <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 p-3 text-sm text-emerald-200">
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
           {toast}
         </div>
       )}
       {users.map((u) => (
-        <div key={u.id} className="flex flex-col gap-3 rounded-xl border border-white/10 bg-black/20 p-4 md:flex-row md:items-center md:justify-between">
+        <div key={u.id} className="app-card flex flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <div className="font-medium">{u.name}</div>
-            <div className="text-sm text-white/60">{u.email}</div>
+            <div className="font-medium text-slate-900">{u.name}</div>
+            <div className="text-sm text-slate-500">{u.email}</div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="rounded border border-white/15 px-2 py-1 text-xs text-white/60">{u.role}</span>
+            <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-500">{u.role}</span>
             <select
               value={u.role}
               onChange={(e) => updateRole(u.email, e.target.value)}
-              className="rounded border border-white/20 bg-zinc-900 px-3 py-2 text-sm"
+              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900"
             >
               <option value="host">host (personal)</option>
               <option value="operator">operator</option>

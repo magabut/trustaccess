@@ -13,5 +13,5 @@ export default function AuditAutoRefresh() {
     return () => clearInterval(id);
   }, [router]);
 
-  return <div className="mb-4 text-xs text-white/50">Auto-refresh every 5s</div>;
+  return <div className="mb-4 text-xs text-slate-400">Auto-refresh every 5s</div>;
 }
