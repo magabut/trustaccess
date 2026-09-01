@@ -38,8 +38,8 @@ Menampilkan statistik ringkas:
 
 ```env
 EID_FAKE=0
-EID_CLIENT_ID=eid-d9vui3N9qAd34TGH1pVHxEoKylrn
-EID_CLIENT_SECRET=eidkey-XKjsuCL4imAbm3YybturEmvsIDhnf698fukKzFzAMR7r1x135bOiWEwbn
+EID_CLIENT_ID=<>Client id>
+EID_CLIENT_SECRET=<client scret
 EID_VERIFIER_BASE_URL=https://gateway.e.id
 EID_BASE_URL=https://api-wallet.e.id
 EID_LOGIN_VERIFICATION_ID=<valid-verification-id>
